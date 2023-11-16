@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
-import "../assets/css/contact.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
   faLinkedinIn,
   faFacebook,
-  faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 
-function ContactShow({ email, linkedin, facebook, twitter }) {
+function ContactShow({ email, linkedin, facebook }) {
   return (
     <section className="contact section" id="contact">
       <h2 className="section-title">Contact me</h2>
@@ -54,19 +52,6 @@ function ContactShow({ email, linkedin, facebook, twitter }) {
             </a>
           </div>
         </div>
-        <div className="contact-info">
-          <FontAwesomeIcon icon={faTwitter} className="contact-icon" />
-          <div>
-            <h3 className="contact-title">Twitter</h3>
-            <a
-              className="contact-subtitle"
-              href={`https://www.twitter.com/${twitter}/`}
-              target="_blank"
-            >
-              @{twitter}
-            </a>
-          </div>
-        </div>
       </div>
     </section>
   );
@@ -76,7 +61,6 @@ const dummyContacts = {
   email: "example@example.com",
   linkedin: "example",
   facebook: "example",
-  twitter: "example",
 };
 
 function Contact() {
@@ -91,7 +75,6 @@ function Contact() {
       email={contacts.email}
       linkedin={contacts.linkedin}
       facebook={contacts.facebook}
-      twitter={contacts.twitter}
     />
   );
 }

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "../assets/css/style.css";
-import "../assets/css/skills.css";
 
 // Dummy data
 const dummyData = [

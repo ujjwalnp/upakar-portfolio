@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
     faLinkedinIn,
-    faTwitter,
+    faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
-import "../assets/css/footer.css";
 
 function FooterShow({ fullName, bio, email, linkedin, twitter }) {
     return (
@@ -52,12 +51,12 @@ function FooterShow({ fullName, bio, email, linkedin, twitter }) {
                 <FontAwesomeIcon icon={faEnvelope} />
               </a>
               <a
-                href={`https://www.twitter.com/${twitter}/`}
+                href={`https://www.facebook.com/${twitter}/`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-social"
               >
-                <FontAwesomeIcon icon={faTwitter} />
+                <FontAwesomeIcon icon={faFacebook} />
               </a>
             </div>
           </div>
@@ -72,7 +71,7 @@ function FooterShow({ fullName, bio, email, linkedin, twitter }) {
     bio: "I'm a hacker",
     email: "example@example.com",
     linkedin: "example",
-    twitter: "example",
+    facebook: "example",
   };
   
   function Footer() {
@@ -89,7 +88,6 @@ function FooterShow({ fullName, bio, email, linkedin, twitter }) {
         email={footerData.email}
         linkedin={footerData.linkedin}
         facebook={footerData.facebook}
-        twitter={footerData.twitter}
       />
     );
   }
