@@ -6,13 +6,13 @@ import {
     faFacebook,
 } from "@fortawesome/free-brands-svg-icons";
 
-function FooterShow({ fullName, bio, email, linkedin, twitter }) {
+function FooterShow({ firstName, lastName, bio, email, linkedin, twitter }) {
     return (
         <footer className="footer">
         <div className="footer-bg">
           <div className="footer-container container grid">
             <div>
-              <h1 className="footer-title">{fullName}</h1>
+              <h1 className="footer-title">{firstName} {lastName}</h1>
               <span className="footer-subtitle">{bio}</span>
             </div>
             <ul className="footer-links">
@@ -67,7 +67,8 @@ function FooterShow({ fullName, bio, email, linkedin, twitter }) {
   }
   // Dummy data
   const dummyData = {
-    fullName: "Sajjan Dhakal",
+    firstName: "Upakar",
+    lastName: "Dhakal",
     bio: "I'm a hacker",
     email: "example@example.com",
     linkedin: "example",
@@ -83,7 +84,8 @@ function FooterShow({ fullName, bio, email, linkedin, twitter }) {
     }, []);
     return (
       <FooterShow
-        fullName={footerData.fullName}
+      firstName={footerData.firstName}
+        lastName={footerData.lastName}
         bio={footerData.bio}
         email={footerData.email}
         linkedin={footerData.linkedin}
