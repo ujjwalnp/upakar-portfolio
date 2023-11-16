@@ -1,60 +1,105 @@
-import React from 'react';
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHouse,
+  faUser,
+  faFile,
+  faBriefcase,
+  faImage,
+  faMessage,
+  faBars,
+  faMoon,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+// import { faRegularMoon } from '@fortawesome/free-regular-svg-icons';
 
-const Header = () => {
+function HeaderShow({ firstName, lastName }) {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const closeMenu = () => {
+    setShowMenu(false);
+  };
+
+  const linkAction = () => {
+    closeMenu();
+  };
   return (
     <header className="header" id="header">
       <nav className="nav container">
         <a href="#" className="nav-logo">
-          Haris Ahmad
+          {firstName} {lastName}
         </a>
 
-        <div className="nav-menu" id="nav-menu">
+        <div
+          className={`nav-menu ${showMenu ? "show-menu" : ""}`}
+          id="nav-menu"
+        >
           <ul className="nav-list grid">
             <li className="nav-item">
-              <a href="#home" className="nav-link">
-                <i className="fa-solid fa-house nav-icon"></i> Home
+              <a href="#home" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Home
               </a>
             </li>
             <li className="nav-item">
-              <a href="#about" className="nav-link">
-                <i className="fa-solid fa-user nav-icon"></i> About
+              <a href="#about" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faUser} className="nav-icon" /> About
               </a>
             </li>
             <li className="nav-item">
-              <a href="#skills" className="nav-link">
-                <i className="fa-solid fa-file nav-icon"></i> Skills
+              <a href="#skills" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faFile} className="nav-icon" /> Skills
               </a>
             </li>
             <li className="nav-item">
-              <a href="#services" className="nav-link">
-                <i className="fa-solid fa-briefcase nav-icon"></i> Services
+              <a href="#services" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faBriefcase} className="nav-icon" />{" "}
+                Services
               </a>
             </li>
             <li className="nav-item">
-              <a href="#portfolio" className="nav-link">
-                <i className="fa-solid fa-image nav-icon"></i> Projects
+              <a href="#portfolio" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faImage} className="nav-icon" /> Blog
               </a>
             </li>
             <li className="nav-item">
-              <a href="#contact" className="nav-link">
-                <i className="fa-solid fa-message nav-icon"></i> Contact
+              <a href="#contact" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faMessage} className="nav-icon" />{" "}
+                Contact
               </a>
             </li>
           </ul>
-          <i className="fa-solid fa-xmark nav-close" id="nav-close"></i>
+          <FontAwesomeIcon
+            icon={faTimes}
+            className="fa-xmark nav-close"
+            id="nav-close"
+            onClick={closeMenu}
+          />
         </div>
 
         <div className="nav-btns">
-          {/* theme btn  */}
-          <i className="fa-regular fa-moon change-theme" id="theme-button"></i>
-
-          <div className="nav-toggle" id="nav-toggle">
-            <i className="fa-solid fa-bars"></i>
+          {/* <FontAwesomeIcon icon={faRegularMoon} className="fa-moon change-theme" id="theme-button" /> */}
+          <div className="nav-toggle" id="nav-toggle" onClick={toggleMenu}>
+            <FontAwesomeIcon icon={faBars} />
           </div>
         </div>
       </nav>
     </header>
   );
-};
+}
+
+const dummyData = {
+    firstName: "Upakar",
+    lastName: "Dhakal",
+  };
+
+function Header() {
+  return (
+    <HeaderShow firstName={dummyData.firstName} lastName={dummyData.lastName} />
+  );
+}
 
 export default Header;
