@@ -8,7 +8,7 @@ const dummyData = {
     experience_years: "01",
     happy_clients: "10",
     companies_worked: "03",
-    resume: "/Assets/Resume.pdf"
+    resume: "https://google.com/"
 };
 
 function AboutShow({ about, experience_years, happy_clients, companies_worked, resume }) {
@@ -44,7 +44,6 @@ function AboutShow({ about, experience_years, happy_clients, companies_worked, r
 
           <div className="about-buttons">
             <a
-              download=""
               href={resume}
               className="button button-flex"
               target="_blank"
