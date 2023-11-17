@@ -5,7 +5,9 @@ const skillSchema = new Schema({
   value: {
     type: String,
   },
-}) 
+},
+    { timestamps: true }
+) 
 
 const serviceSchema = new Schema({
   index: {
@@ -17,7 +19,9 @@ const serviceSchema = new Schema({
   description: {
     type: String,
   },
-}) 
+},
+    { timestamps: true }
+) 
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -71,6 +75,9 @@ const userSchema = new mongoose.Schema({
   },
   skills: [skillSchema],
   services: [serviceSchema],
+  resume: {
+    type: String,
+  },
 },
   { timestamps: true }
 ) 
