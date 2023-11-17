@@ -1,7 +1,7 @@
-require("dotenv").config()
-const express = require("express")
-const mongoose = require("mongoose")
-const cors = require("cors")
+require('dotenv').config()
+const express = require('express')
+const mongoose = require('mongoose')
+const cors = require('cors')
 
 /* EXPRESS SERVER  */
 const server = express()
@@ -10,7 +10,7 @@ const server = express()
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
-    console.log("Database Connected")
+    console.log('Database Connected')
   })
   .catch((err) => {
     console.log(err)
@@ -27,5 +27,5 @@ server.use(cors())
 
 /* SERVER LISTEN */
 server.listen(process.env.SERVER_PORT, () => {
-  console.log("Server Started")
+  console.log('Server Started')
 })
