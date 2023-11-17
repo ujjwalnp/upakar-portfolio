@@ -1,8 +1,8 @@
 import React from 'react';
-import '../../assets/css/Login.css';
-import LoginIcon from '../../assets/icons/login-icon.png';
+import '../assets/css/Login.css';
+import LoginIcon from '../assets/icons/login-icon.png';
 
-function AdminPage() {
+function LoginPage() {
   return (
     <div className="content-body">
       <div className="form-wrapper">
@@ -14,9 +14,9 @@ function AdminPage() {
 
         <form>
           <div className="field">
-            <input type="email" name="email" className="input" placeholder=" " required />
-            <label htmlFor="email" className="label">
-              Email
+            <input type="text" name="username" className="input" placeholder=" " required />
+            <label htmlFor="username" className="label">
+                Username
             </label>
           </div>
           <div className="field">
@@ -47,4 +47,4 @@ function AdminPage() {
   );
 };
 
-export default AdminPage;
+export default LoginPage;
