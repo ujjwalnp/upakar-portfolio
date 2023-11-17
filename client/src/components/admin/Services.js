@@ -1,78 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const dummyData = {
-  about:
-    "An accomplished Frontend Developer with a passion for creating seamless user experiences. With a solid foundation in HTML, CSS, and JavaScript, I specialize in crafting visually captivating and intuitively navigable websites. Leveraging my expertise in responsive design and UI/UX principles, I bring concepts to life, ensuring each project is a masterpiece of precision and functionality.",
-  experience_years: "01",
-  happy_clients: "10",
-  companies_worked: "03",
-  resume: "https://google.com/",
-};
+// Dummy data
+const dummyData = [
+    {
+      title: "Web Development",
+      description: "Web dev is fun"
+    },
+    {
+      title: "UI/UX Design",
+      description: "UI/UX is fun"
+    },
+  ];
+
+function ServiceShow({ title }) {
+  return (
+    <div className="skills-content container">
+      <div className="skills-name">
+        {title}
+        <a>
+          <FontAwesomeIcon icon={faTrash} className="button-icon" />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 function Services() {
-  return (
-    <section className="about section" id="services">
-      <h2 className="section-title">About</h2>
-      <span className="section-subtitle">Professional Info</span>
+  const [services, setServices] = useState([]);
 
+  useEffect(() => {
+    // Simulating an API call with dummy data
+    setServices(dummyData);
+  }, []);
+  return (
+    <section className="skills section" id="services">
+      <h2 className="section-title">Services</h2>
+      <span className="section-subtitle">My Services</span>
+      {services.map((service) => (
+            <ServiceShow 
+                title={service.title} 
+                description={service.description}
+            />
+          ))}
       <form className="container">
         <div className="field">
-          <input type="text" name="about" className="input" placeholder=" " />
-          <label htmlFor="about" className="label">
-            About
+          <input
+            type="text"
+            name="add-services-title"
+            className="input"
+            placeholder=" "
+          />
+          <label htmlFor="add-services-title" className="label">
+            New Service Title
           </label>
         </div>
         <div className="field">
           <input
             type="text"
-            name="homeDescription"
+            name="add-services-description"
             className="input"
             placeholder=" "
           />
-          <label htmlFor="homeDescription" className="label">
-            Home-Description
+          <label htmlFor="add-services-description" className="label">
+            Description
           </label>
         </div>
-        <div className="field">
-          <input
-            type="text"
-            name="experienced_years"
-            className="input"
-            placeholder=" "
-          />
-          <label htmlFor="experienced_years" className="label">
-            Experienced Years
-          </label>
-        </div>
-        <div className="field">
-          <input
-            type="text"
-            name="happy_clients"
-            className="input"
-            placeholder=" "
-          />
-          <label htmlFor="happy_clients" className="label">
-            Happy Clients
-          </label>
-        </div>
-        <div className="field">
-          <input
-            type="text"
-            name="company_worked"
-            className="input"
-            placeholder=" "
-          />
-          <label htmlFor="company_worked" className="label">
-            Company Worked
-          </label>
-        </div>
-
-        <div className="form-action">
-          <button type="submit" className="btn primary">
-            Submit
-          </button>
+        <br />
+        <div className="skills-content container skills-name">
+          <a href="#contact" className="button-flex">
+            Add
+            <FontAwesomeIcon icon={faPlusCircle} className="button-icon" />
+          </a>
         </div>
       </form>
     </section>
