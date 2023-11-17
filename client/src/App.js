@@ -1,29 +1,22 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./assets/css/App.css";
-import Header from "./components/Header";
-import Home from "./components/Home";
-import About from "./components/About";
-import Skills from "./components/Skills";
-import Services from "./components/Services";
-// import Portfolio from './components/Portfolio';
-import ServiceContact from "./components/ServiceContact";
-// import Testimonial from './components/Testimonial';
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
+import HomePage from "./pages/HomePage";
+import BlogPage from "./pages/BlogPage";
+import LoginPage from "./components/admin/Login";
+import AdminPage from "./components/admin/Admin";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      <Home />
-      <About />
-      <Skills />
-      <Services />
-      {/* <Portfolio /> */}
-      <ServiceContact />
-      {/* <Testimonial /> */}
-      <Contact />
-      <Footer />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" exact element={<HomePage />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
