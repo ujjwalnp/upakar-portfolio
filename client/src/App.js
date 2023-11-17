@@ -3,8 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./assets/css/App.css";
 import HomePage from "./pages/HomePage";
 import BlogPage from "./pages/BlogPage";
-import LoginPage from "./components/admin/Login";
-import AdminPage from "./components/admin/Admin";
+import LoginPage from "./pages/LoginPage";
+import AdminPage from "./pages/AdminPage";
+import BlogEdit from "./pages/BlogEdit";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/blog" element={<BlogEdit />} />
         </Routes>
       </BrowserRouter>
     </div>
