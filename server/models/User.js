@@ -5,13 +5,13 @@ const skillSchema = new Schema({
   value: {
     type: String,
   },
-},
-    { timestamps: true }
-) 
+}) 
 
 const serviceSchema = new Schema({
   index: {
     type: Number,
+    required: true,
+    unique: true,
   },
   title: {
     type: String,
@@ -19,11 +19,9 @@ const serviceSchema = new Schema({
   description: {
     type: String,
   },
-},
-    { timestamps: true }
-) 
+}) 
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -31,9 +29,11 @@ const userSchema = new mongoose.Schema({
   },
   firstName: {
     type: String,
+    default: '',
   },
   lastName: {
     type: String,
+    default: '',
   },
   password: {
     type: String,
@@ -41,45 +41,54 @@ const userSchema = new mongoose.Schema({
   },
   bio: {
     type: String,
-  },
-  homeDescription: {
-    type: String,
+    default: '',
   },
   contact: {
     email: {
       type: String,
+      default: '',
     },
     linkedin: {
       type: String,
+      default: '',
     },
     facebook: {
       type: String,
+      default: '',
     },
   },
   about: {
     about: {
       type: String,
+      default: '',
+    },
+    homeDescription: {
+      type: String,
+      default: '',
     },
     experience_years: {
       type: String,
+      default: '00',
     },
     happy_clients: {
       type: String,
+      default: '00',
     },
     companies_worked: {
       type: String,
+      default: '00',
     },
     resume: {
       type: String,
+      default: '',
     },
   },
   skills: [skillSchema],
   services: [serviceSchema],
-  resume: {
-    type: String,
-  },
 },
   { timestamps: true }
 ) 
     
 const User = mongoose.model('User', userSchema) 
+
+module.exports = User
