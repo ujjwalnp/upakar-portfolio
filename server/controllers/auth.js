@@ -20,10 +20,10 @@ exports.loginUser = async (req, res) => {
         return res.status(401).json({ message: 'Login: Invalid password' })
       }
   
-      const token = jwt.sign({ id: user.userId, username: user.username, password: user.password }, process.env.JWT_SECRET)
+      const token = jwt.sign({ id: user.userId, username: user.username, password: user.password }, process.env.JWT_SECRET, { expiresIn: '1h' })
       console.log('Login: Login successful')
   
-      res.status(200).json({ token, userId: user._id, message: 'Login: Login successful' })
+      res.status(200).json({ message: 'Login: Login successful', token, userId: user._id })
     } catch (error) {
       res.status(500).json({ message: 'Login: Server error' })
     }
