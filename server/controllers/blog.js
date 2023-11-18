@@ -16,7 +16,7 @@ exports.createBlog = async(req, res)=>{
         // saves newBlog
         await newBlog.save()
 
-        res.status(201).json(newBlog)
+        res.status(201).json({ nessage: 'Blog created successfully', newBlog})
     }
     catch(error) {
         res.status(409).json({ message: error.message })
@@ -28,7 +28,7 @@ exports.getAllBlogs = async(req, res)=>{
     try {
         // get all the blogs from database
         const blogs = await Blog.find().sort({ createdAt: -1 }).exec()
-        res.status(200).json(blogs)
+        res.status(200).json({ blogs })
     }
     catch(error) {
         res.status(404).json({ message: error.message })
@@ -41,7 +41,7 @@ exports.getSpecificBlog = async(req, res)=>{
 
     try {
         const blog = await Blog.findById(id)
-        res.status(200).json(blog)
+        res.status(200).json({ blog })
     }
     catch (error) {
         res.status(404).json({ message: error.message })
@@ -76,7 +76,7 @@ exports.updateBlog = async (req, res) => {
       // Save the updated blog
       await blog.save()
   
-      res.status(200).json({ blog, message: 'Blog updated successfully' })
+      res.status(200).json({ message: 'Blog updated successfully', blog })
     } catch (error) {
       res.status(500).json({ message: error.message })
     }
