@@ -6,7 +6,7 @@ function BlogEdit() {
   return (
     <>
         <Header />
-        <BlogEditComponent />
+        <BlogEditComponent id="blog"/>
     </>
   );
 };

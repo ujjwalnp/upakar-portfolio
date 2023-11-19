@@ -9,12 +9,12 @@ import Services from '../components/admin/Services';
 function AdminPage() {
   return (
     <>
-        <Header />
-        <User />
-        <About />
-        <Skills />
-        <Security />
-        <Services />
+      <Header />
+      <User id="user" />
+      <About id="about" />
+      <Skills id="skills" />
+      <Services id="services" />
+      <Security id="security" />
     </>
   );
 };

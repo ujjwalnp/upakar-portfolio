@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import env from "react-dotenv";
+import Cookies from "js-cookie";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,7 +32,57 @@ function ServiceShow({ title }) {
 }
 
 function Services() {
+  const navigate = useNavigate();
+  const apiUrl = env.APP_API_BASE_URL;
+
   const [services, setServices] = useState([]);
+  const index = 1;
+  const [ category, setCategory ] = useState("");
+  const [ title, setTitle ] = useState("");
+  const [ description, setDescription ] = useState("");
+
+  const handleCategoryChange = (e) => {
+    setCategory(e.target.value);
+  };
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+  };
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addService();
+  };
+
+  const addService = async() => {
+    try {
+      const endpoint = `/api/user/service/${ Cookies.get('userId') }/`
+      const response = await axios.post(apiUrl + endpoint, {
+          index: index,
+          category: category,
+          title: title,
+          description: description
+      },
+      {
+          headers: {
+            Authorization: `Bearer ${ Cookies.get('token') }`,
+          },
+      });
+
+      if (response.data.status === "error") {
+          // Reset the values on unsuccessful authentication
+          alert(response.data.error);
+          return;
+      }
+
+      navigate('/admin')
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
 
   useEffect(() => {
     // Simulating an API call with dummy data
@@ -44,12 +98,14 @@ function Services() {
                 description={service.description}
             />
           ))}
-      <form className="container">
+      <form className="container" onSubmit={handleSubmit}>
         <div className="field">
           <input
             type="text"
             name="add-services-title"
             className="input"
+            value={title}
+            onChange={handleTitleChange}
             placeholder=" "
           />
           <label htmlFor="add-services-title" className="label">
@@ -61,6 +117,8 @@ function Services() {
             type="text"
             name="add-services-description"
             className="input"
+            value={description}
+            onChange={handleDescriptionChange}
             placeholder=" "
           />
           <label htmlFor="add-services-description" className="label">
@@ -68,11 +126,11 @@ function Services() {
           </label>
         </div>
         <br />
-        <div className="skills-content container skills-name">
-          <a href="#contact" className="button-flex">
+        <div className="container">
+          <button type="submit" className="btn button-flex skills-name">
             Add
             <FontAwesomeIcon icon={faPlusCircle} className="button-icon" />
-          </a>
+          </button>
         </div>
       </form>
     </section>
