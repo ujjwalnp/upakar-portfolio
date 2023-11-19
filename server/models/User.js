@@ -66,15 +66,15 @@ const userSchema = new Schema({
       type: String,
       default: '',
     },
-    experience_years: {
+    experiencedYears: {
       type: String,
       default: '00',
     },
-    happy_clients: {
+    happyClients: {
       type: String,
       default: '00',
     },
-    companies_worked: {
+    companiesWorked: {
       type: String,
       default: '00',
     },

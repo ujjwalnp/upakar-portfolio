@@ -150,16 +150,16 @@ exports.updateUserDetails = async (req, res) => {
           user.about.homeDescription = aboutData.homeDescription
         }
   
-        if (aboutData.experience_years && aboutData.experience_years.trim() !== '') {
-          user.about.experience_years = aboutData.experience_years
+        if (aboutData.experiencedYears && aboutData.experiencedYears.trim() !== '') {
+          user.about.experiencedYears = aboutData.experiencedYears
         }
   
-        if (aboutData.happy_clients && aboutData.happy_clients.trim() !== '') {
-          user.about.happy_clients = aboutData.happy_clients
+        if (aboutData.happyClients && aboutData.happyClients.trim() !== '') {
+          user.about.happyClients = aboutData.happyClients
         }
 
-        if (aboutData.companies_worked && aboutData.companies_worked.trim() !== '') {
-          user.about.companies_worked = aboutData.companies_worked
+        if (aboutData.companiesWorked && aboutData.companiesWorked.trim() !== '') {
+          user.about.companiesWorked = aboutData.companiesWorked
         }
 
         if (aboutData.resume && aboutData.resume.trim() !== '') {
