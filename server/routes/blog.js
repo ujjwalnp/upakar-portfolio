@@ -8,7 +8,7 @@ router
     .post('/', verifyToken, bogController.createBlog)
 
 /* READ */
-    .get('/', verifyToken, bogController.getAllBlogs)
+    .get('/', bogController.getAllBlogs)
     .get('/:id', verifyToken, bogController.getSpecificBlog)
 
 /* UPDATE */
