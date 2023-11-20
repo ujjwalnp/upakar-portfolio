@@ -9,7 +9,7 @@ router
     .post('/service/:userId', verifyToken, userController.addService)
 
 /* READ */
-    .get('/:userId', verifyToken, userController.getUserDetails)
+    .get('/', userController.getUserDetails)
 
 /* UPDATE */
     .patch('/:userId', verifyToken, userController.updateUserDetails)

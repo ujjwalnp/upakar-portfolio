@@ -54,18 +54,8 @@ exports.addService = async(req, res)=>{
 
 /* READ API */
 exports.getUserDetails = async(req, res) => {
-    // parse userId from url
-    const { userId } = req.params
-
     try {
-        let user
-        
-        // Check if userId looks like an ObjectId (24-character hexadecimal)
-        if (/^[0-9a-fA-F]{24}$/.test(userId)) {
-            user = await User.findOne({ _id: userId }).select('-password')
-        } else {
-            user = await User.findOne({ username: userId }).select('-password')
-        }
+        const user = await User.findOne({ type: 'admin' }).select('-password')
 
         if (!user) {
             // If no user found with the given userId, return a 404 response
