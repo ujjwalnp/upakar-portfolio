@@ -1,26 +1,5 @@
 import React, { useState, useEffect } from "react";
-
-// Dummy data
-const dummyData = [
-  {
-    value: "JavaScript",
-  },
-  {
-    value: "ReactJS",
-  },
-  {
-    value: "Bootstrap",
-  },
-  {
-    value: "Tailwind CSS",
-  },
-  {
-    value: "CSS",
-  },
-  {
-    value: "Express.JS",
-  },
-];
+import { connect } from "react-redux";
 
 function SkillShow({ value }) {
     return (
@@ -30,13 +9,14 @@ function SkillShow({ value }) {
     );
 }
 
-function Skills() {
+function Skills({ sharedData }) {
     const [skills, setSkills] = useState([]);
 
   useEffect(() => {
-    // Simulating an API call with dummy data
-    setSkills(dummyData);
-  }, []);
+    if (sharedData && sharedData.skills) {
+        setSkills(sharedData.skills);
+      }
+  }, [sharedData]);
 
   return (
     <section className="skills section" id="skills">
@@ -51,4 +31,9 @@ function Skills() {
   );
 }
 
-export default Skills;
+// Connect the Skills component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+
+export default connect(mapStateToProps)(Skills);

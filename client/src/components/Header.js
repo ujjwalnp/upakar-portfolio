@@ -10,6 +10,7 @@ import {
   faBars,
   faMoon,
   faTimes,
+  faBolt
 } from "@fortawesome/free-solid-svg-icons";
 // import { faRegularMoon } from '@fortawesome/free-regular-svg-icons';
 
@@ -40,33 +41,33 @@ function HeaderShow({ firstName, lastName }) {
         >
           <ul className="nav-list grid">
             <li className="nav-item">
-              <a href="#home" className="nav-link" onClick={linkAction}>
+              <a href="/#home" className="nav-link" onClick={linkAction}>
                 <FontAwesomeIcon icon={faHouse} className="nav-icon" /> Home
               </a>
             </li>
             <li className="nav-item">
-              <a href="#about" className="nav-link" onClick={linkAction}>
+              <a href="/#about" className="nav-link" onClick={linkAction}>
                 <FontAwesomeIcon icon={faUser} className="nav-icon" /> About
               </a>
             </li>
             <li className="nav-item">
-              <a href="#skills" className="nav-link" onClick={linkAction}>
-                <FontAwesomeIcon icon={faFile} className="nav-icon" /> Skills
+              <a href="/#skills" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faBolt} className="nav-icon" /> Skills
               </a>
             </li>
             <li className="nav-item">
-              <a href="#services" className="nav-link" onClick={linkAction}>
+              <a href="/#services" className="nav-link" onClick={linkAction}>
                 <FontAwesomeIcon icon={faBriefcase} className="nav-icon" />{" "}
                 Services
               </a>
             </li>
             <li className="nav-item">
-              <a href="#portfolio" className="nav-link" onClick={linkAction}>
-                <FontAwesomeIcon icon={faImage} className="nav-icon" /> Blog
+              <a href="/blog" className="nav-link" onClick={linkAction}>
+                <FontAwesomeIcon icon={faFile} className="nav-icon" /> Blog
               </a>
             </li>
             <li className="nav-item">
-              <a href="#contact" className="nav-link" onClick={linkAction}>
+              <a href="/#contact" className="nav-link" onClick={linkAction}>
                 <FontAwesomeIcon icon={faMessage} className="nav-icon" />{" "}
                 Contact
               </a>

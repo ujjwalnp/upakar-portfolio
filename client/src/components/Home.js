@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -9,18 +10,6 @@ import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 import Mouse from "../assets/svg/mouse.svg";
 import HomeImg from "../assets/icons/logo1.png";
-
-const dummyData = {
-  email: "example@example.com",
-  firstName: "Upakar",
-  lastName: "Dhakal",
-  bio: "A Full Stack Web Developer",
-  homeDescription:
-    "I am a Full Stack Web Developer with industry experience building websites and web applications. I specialize in JavaScript and have professional experience working with React, Node, Express, and MongoDB. I also have experience working with Python, Django, and PostgreSQL",
-  bio: "A Full Stack Web Developer",
-  linkedin: "haris-ahmad-aa",
-  facebook: "haris.ahmad.aa",
-};
 
 function HomeView({
   email,
@@ -106,23 +95,30 @@ function HomeView({
   );
 }
 
-function Home() {
-  const [homeData, setHomeData] = useState([]);
+function Home({ sharedData }) {
+  const [homeData, setHomeData] = useState({});
 
   useEffect(() => {
-    // Simulating an API call with dummy data
-    setHomeData(dummyData);
-  }, []);
+    if (sharedData) {
+        setHomeData(sharedData);
+      }
+  }, [sharedData]);
+
   return (
     <HomeView
-      email={homeData.email}
-      linkedin={homeData.linkedin}
-      facebook={homeData.facebook}
+      email={homeData.contact?.email}
+      linkedin={homeData.contact?.linkedin}
+      facebook={homeData.contact?.facebook}
       firstName={homeData.firstName}
       bio={homeData.bio}
-      homeDescription={homeData.homeDescription}
+      homeDescription={homeData.about?.homeDescription}
     />
   );
 }
 
-export default Home;
+// Connect the Home component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+
+export default connect(mapStateToProps)(Home);

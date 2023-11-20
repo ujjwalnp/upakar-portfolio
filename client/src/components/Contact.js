@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -56,20 +57,15 @@ function ContactShow({ email, linkedin, facebook }) {
     </section>
   );
 }
-// Dummy data
-const dummyContacts = {
-  email: "example@example.com",
-  linkedin: "example",
-  facebook: "example",
-};
 
-function Contact() {
-  const [contacts, setContacts] = useState([]);
+function Contact({ sharedData }) {
+  const [contacts, setContacts] = useState({});
 
   useEffect(() => {
-    // Simulating an API call with dummy data
-    setContacts(dummyContacts);
-  }, []);
+    if (sharedData && sharedData.contact) {
+        setContacts(sharedData.contact);
+      }
+  }, [sharedData]);
   return (
     <ContactShow
       email={contacts.email}
@@ -79,4 +75,9 @@ function Contact() {
   );
 }
 
-export default Contact;
+// Connect the Contact component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+
+export default connect(mapStateToProps)(Contact);

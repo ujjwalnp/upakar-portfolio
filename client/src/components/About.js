@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
 import AboutImg from '../assets/icons/aboutimg.png';
-
-const dummyData = {
-    about: "An accomplished Frontend Developer with a passion for creating seamless user experiences. With a solid foundation in HTML, CSS, and JavaScript, I specialize in crafting visually captivating and intuitively navigable websites. Leveraging my expertise in responsive design and UI/UX principles, I bring concepts to life, ensuring each project is a masterpiece of precision and functionality.",
-    experience_years: "01",
-    happy_clients: "10",
-    companies_worked: "03",
-    resume: "https://google.com/"
-};
 
 function AboutShow({ about, experience_years, happy_clients, companies_worked, resume }) {
     return (
@@ -47,6 +40,7 @@ function AboutShow({ about, experience_years, happy_clients, companies_worked, r
               href={resume}
               className="button button-flex"
               target="_blank"
+              rel="noopener noreferrer"
             >
               Download Resume
               <FontAwesomeIcon icon={faFileArrowDown} className="button-icon" />
@@ -56,13 +50,16 @@ function AboutShow({ about, experience_years, happy_clients, companies_worked, r
     );
 }
 
-function About() {
-    const [aboutData, setAboutData] = useState([]);
+function About({ sharedData }) {
+    const [aboutData, setAboutData] = useState({});
   
     useEffect(() => {
-      // Simulating an API call with dummy data
-      setAboutData(dummyData);
-    }, []);
+      // Check if sharedData and sharedData.about exist before updating state
+      if (sharedData && sharedData.about) {
+        setAboutData(sharedData.about);
+      }
+
+    }, [sharedData]);
 
   return (
     <section className="about section" id="about">
@@ -73,9 +70,9 @@ function About() {
         <img src={AboutImg} alt="" className="about-img" />
         <AboutShow
             about={aboutData.about}
-            experience_years={aboutData.experience_years}
-            happy_clients={aboutData.happy_clients}
-            companies_worked={aboutData.companies_worked}
+            experience_years={aboutData.experiencedYears}
+            happy_clients={aboutData.happyClients}
+            companies_worked={aboutData.companiesWorked}
             resume={aboutData.resume}
       />
         
@@ -84,4 +81,9 @@ function About() {
   );
 }
 
-export default About;
+// Connect the About component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+  
+  export default connect(mapStateToProps)(About);

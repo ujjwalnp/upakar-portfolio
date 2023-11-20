@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGears, faUmbrella, faPen, faBolt, faShieldHalved, faCircleUser, faList, faLock } from "@fortawesome/free-solid-svg-icons";
 import "../assets/css/style.css";
-
-// Dummy data
-const dummyServices = [
-  {
-    title: "Web Development",
-    description: "Web dev is fun"
-  },
-  {
-    title: "UI/UX Design",
-    description: "UI/UX is fun"
-  },
-];
 
 const getIcon = (index) => {
   const allIcons = [ faPen, faBolt, faUmbrella, faGears, faShieldHalved, faCircleUser, faList, faLock ];
@@ -32,13 +21,14 @@ function ServiceItem({ title, index, description }) {
   );
 }
 
-function ServicesShow() {
+function ServicesShow({ sharedData }) {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    // Simulating an API call with dummy data
-    setServices(dummyServices);
-  }, []);
+    if (sharedData && sharedData.services) {
+        setServices(sharedData.services);
+      }
+  }, [sharedData]);
 
   return (
     <>
@@ -61,4 +51,9 @@ function ServicesShow() {
   );
 }
 
-export default ServicesShow;
+// Connect the ServicesShow component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+
+export default connect(mapStateToProps)(ServicesShow);
