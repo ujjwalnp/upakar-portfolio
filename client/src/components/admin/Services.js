@@ -3,50 +3,59 @@ import { useNavigate } from "react-router-dom";
 import env from "react-dotenv";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-// Dummy data
-const dummyData = [
-    {
-      title: "Web Development",
-      description: "Web dev is fun"
-    },
-    {
-      title: "UI/UX Design",
-      description: "UI/UX is fun"
-    },
-  ];
-
-function ServiceShow({ title }) {
+function ServiceShow({ id, title }) {
+    const apiUrl = env.APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const deleteService = async() => {
+          try {
+              const endpoint = `/api/user/service/${ id }/`
+              const response = await axios.delete(apiUrl + endpoint,
+              {headers: {
+                  Authorization: `Bearer ${ Cookies.get('token') }`,
+                },
+                data: {
+                    userId: Cookies.get('userId'),
+                },
+              }
+              );
+      
+              if (response.data.status === "error") {
+                  alert(response.data.error);
+                  return;
+              }
+      
+              navigate('/admin')
+          }
+          catch (error) {
+              console.log(error);
+          }
+    }
   return (
     <div className="skills-content container">
-      <div className="skills-name">
-        {title}
-        <a>
-          <FontAwesomeIcon icon={faTrash} className="button-icon" />
-        </a>
-      </div>
+      <a className="skills-name" onClick={deleteService}>{title}
+        <FontAwesomeIcon icon={faTrash} className="button-icon" />
+      </a>
     </div>
   );
 }
 
-function Services() {
+
+function Services({ sharedData }) {
   const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
   const [services, setServices] = useState([]);
-  const index = 1;
-  const [ category, setCategory ] = useState("");
-  const [ title, setTitle ] = useState("");
-  const [ description, setDescription ] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
-  const handleCategoryChange = (e) => {
-    setCategory(e.target.value);
-  };
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
+
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   };
@@ -56,73 +65,70 @@ function Services() {
     addService();
   };
 
+
   const addService = async() => {
     try {
-      const endpoint = `/api/user/service/${ Cookies.get('userId') }/`
-      const response = await axios.post(apiUrl + endpoint, {
-          index: index,
-          category: category,
-          title: title,
-          description: description
-      },
-      {
-          headers: {
-            Authorization: `Bearer ${ Cookies.get('token') }`,
-          },
-      });
+        const endpoint = `/api/user/service/${ Cookies.get('userId') }/`
+        const response = await axios.post(apiUrl + endpoint, {
+            index: 2,
+            title: title,
+            description: description
+        },
+        {
+            headers: {
+              Authorization: `Bearer ${ Cookies.get('token') }`,
+            },
+        });
 
-      if (response.data.status === "error") {
-          // Reset the values on unsuccessful authentication
-          alert(response.data.error);
-          return;
-      }
+        if (response.data.status === "error") {
+            alert(response.data.error);
+            return;
+        }
 
-      navigate('/admin')
+        navigate('/admin')
     }
     catch (error) {
         console.log(error);
     }
-}
+  }
 
   useEffect(() => {
-    // Simulating an API call with dummy data
-    setServices(dummyData);
-  }, []);
+    if (sharedData && sharedData.services) {
+        setServices(sharedData.services);
+      }
+  }, [sharedData]);
   return (
     <section className="skills section" id="services">
       <h2 className="section-title">Services</h2>
-      <span className="section-subtitle">My Services</span>
+      <span className="section-subtitle">My offering</span>
       {services.map((service) => (
-            <ServiceShow 
-                title={service.title} 
-                description={service.description}
-            />
-          ))}
+        <ServiceShow id={service._id} title={service.title} />
+      ))}
       <form className="container" onSubmit={handleSubmit}>
         <div className="field">
           <input
             type="text"
-            name="add-services-title"
+            name="add-services"
             className="input"
+            placeholder=" "
             value={title}
             onChange={handleTitleChange}
-            placeholder=" "
           />
-          <label htmlFor="add-services-title" className="label">
+          <label htmlFor="add-skills" className="label">
             New Service Title
           </label>
         </div>
         <div className="field">
           <input
             type="text"
-            name="add-services-description"
+            name="add-services"
             className="input"
+            placeholder=" "
             value={description}
             onChange={handleDescriptionChange}
-            placeholder=" "
           />
-          <label htmlFor="add-services-description" className="label">
-            Description
+          <label htmlFor="add-skills" className="label">
+            New Service Title
           </label>
         </div>
         <br />
@@ -137,4 +143,9 @@ function Services() {
   );
 }
 
-export default Services;
+// Connect the Services component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+
+export default connect(mapStateToProps)(Services);
