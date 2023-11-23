@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import env from "react-dotenv";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,19 +29,44 @@ const dummyData = [
   },
 ];
 
-function SkillShow({ value }) {
+function SkillShow({ id, value }) {
+    const apiUrl = env.APP_API_BASE_URL;
+    const navigate = useNavigate();
+    const deleteSkill = async() => {
+          try {
+              const endpoint = `/api/user/skill/${ id }/`
+              const response = await axios.delete(apiUrl + endpoint,
+              {headers: {
+                  Authorization: `Bearer ${ Cookies.get('token') }`,
+                },
+                data: {
+                    userId: Cookies.get('userId'),
+                },
+              }
+              );
+      
+              if (response.data.status === "error") {
+                  alert(response.data.error);
+                  return;
+              }
+      
+              navigate('/admin')
+          }
+          catch (error) {
+              console.log(error);
+          }
+    }
   return (
     <div className="skills-content container">
-      <div className="skills-name">{value}
-      <a>
+      <a className="skills-name" onClick={deleteSkill}>{value}
         <FontAwesomeIcon icon={faTrash} className="button-icon" />
       </a>
-      </div>
     </div>
   );
 }
 
-function Skills() {
+
+function Skills({ sharedData }) {
   const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
@@ -55,6 +81,7 @@ function Skills() {
     e.preventDefault();
     addSkill();
   };
+
 
   const addSkill = async() => {
     try {
@@ -83,15 +110,16 @@ function Skills() {
   }
 
   useEffect(() => {
-    // Simulating an API call with dummy data
-    setSkills(dummyData);
-  }, []);
+    if (sharedData && sharedData.skills) {
+        setSkills(sharedData.skills);
+      }
+  }, [sharedData]);
   return (
     <section className="skills section" id="skills">
       <h2 className="section-title">Skills</h2>
       <span className="section-subtitle">My Technical Skills</span>
       {skills.map((skill) => (
-        <SkillShow value={skill.value} />
+        <SkillShow id={skill._id} value={skill.value} />
       ))}
       <form className="container" onSubmit={handleSubmit}>
         <div className="field">
@@ -119,4 +147,9 @@ function Skills() {
   );
 }
 
-export default Skills;
+// Connect the Skills component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+
+export default connect(mapStateToProps)(Skills);

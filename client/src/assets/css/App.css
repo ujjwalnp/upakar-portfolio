@@ -474,7 +474,7 @@ img {
 
 /* skills  */
 .skills-content {
-  display: inline-block;
+  display: inline-flex;
 }
 
 .skills-name {
