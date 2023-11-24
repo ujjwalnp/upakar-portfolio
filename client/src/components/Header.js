@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHouse,
@@ -92,15 +93,23 @@ function HeaderShow({ firstName, lastName }) {
   );
 }
 
-const dummyData = {
-    firstName: "Upakar",
-    lastName: "Dhakal",
-  };
-
-function Header() {
-  return (
-    <HeaderShow firstName={dummyData.firstName} lastName={dummyData.lastName} />
+function Header({ sharedData }) {
+    const [headerData, setHeaderData] = useState({});
+    useEffect(() => {
+        if (sharedData) {
+            setHeaderData(sharedData);
+        }
+      }, [sharedData]);
+    
+    
+    return (
+    <HeaderShow firstName={headerData.firstName} lastName={headerData.lastName} />
   );
 }
 
-export default Header;
+// Connect the Header component to the Redux store
+const mapStateToProps = (state) => ({
+    sharedData: state.api.sharedData,
+  });
+
+export default connect(mapStateToProps)(Header);
