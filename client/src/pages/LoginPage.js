@@ -42,8 +42,8 @@ function LoginPage() {
             return;
         }
 
-        Cookies.set('token', response.data.token, { expires: 1 });
-        Cookies.set('userId', response.data.userId, { expires: 1 });
+        Cookies.set('token', response.data.token, { expires: 1 / 24 });
+        Cookies.set('userId', response.data.userId, { expires: 1 / 24 });
         navigate('/admin')
     }
     catch (error) {
