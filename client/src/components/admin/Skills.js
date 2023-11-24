@@ -6,30 +6,10 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
-
-// Dummy data
-const dummyData = [
-  {
-    value: "JavaScript",
-  },
-  {
-    value: "ReactJS",
-  },
-  {
-    value: "Bootstrap",
-  },
-  {
-    value: "Tailwind CSS",
-  },
-  {
-    value: "CSS",
-  },
-  {
-    value: "Express.JS",
-  },
-];
+import { useAlert } from "react-alert";
 
 function SkillShow({ id, value }) {
+    const alert = useAlert();
     const apiUrl = env.APP_API_BASE_URL;
     const navigate = useNavigate();
     const deleteSkill = async() => {
@@ -46,10 +26,10 @@ function SkillShow({ id, value }) {
               );
       
               if (response.data.status === "error") {
-                  alert(response.data.error);
-                  return;
+                alert.error(`Failed: ${response.data.error}`);
+                return;
               }
-      
+              alert.success('Skill deleted!');
               navigate('/admin')
           }
           catch (error) {
@@ -67,6 +47,7 @@ function SkillShow({ id, value }) {
 
 
 function Skills({ sharedData }) {
+  const alert = useAlert();
   const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
@@ -96,12 +77,10 @@ function Skills({ sharedData }) {
         });
 
         if (response.data.status === "error") {
-            // Reset the values on unsuccessful authentication
-            setValue("");
-            alert(response.data.error);
+            alert.error(`Failed: ${response.data.error}`);
             return;
         }
-
+        alert.success('Skill added!');
         navigate('/admin')
     }
     catch (error) {

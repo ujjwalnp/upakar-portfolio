@@ -3,18 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import env from "react-dotenv";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileArrowDown } from '@fortawesome/free-solid-svg-icons';
-
-const dummyData = {
-    about: "An accomplished Frontend Developer with a passion for creating seamless user experiences. With a solid foundation in HTML, CSS, and JavaScript, I specialize in crafting visually captivating and intuitively navigable websites. Leveraging my expertise in responsive design and UI/UX principles, I bring concepts to life, ensuring each project is a masterpiece of precision and functionality.",
-    experience_years: "01",
-    happy_clients: "10",
-    companies_worked: "03",
-    resume: "https://google.com/"
-};
+import { useAlert } from 'react-alert';
 
 function User() {
+  const alert = useAlert();
   const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
@@ -69,11 +61,10 @@ function User() {
         });
 
         if (response.data.status === "error") {
-            // Reset the values on unsuccessful authentication
-            alert(response.data.error);
+            alert.error(`Failed: ${response.data.error}`);
             return;
         }
-
+        alert.success('User details updated!');
         navigate('/admin')
     }
     catch (error) {

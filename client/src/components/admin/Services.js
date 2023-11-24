@@ -6,8 +6,10 @@ import axios from "axios";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useAlert } from "react-alert";
 
 function ServiceShow({ id, title }) {
+    const alert = useAlert();
     const apiUrl = env.APP_API_BASE_URL;
     const navigate = useNavigate();
     const deleteService = async() => {
@@ -24,10 +26,10 @@ function ServiceShow({ id, title }) {
               );
       
               if (response.data.status === "error") {
-                  alert(response.data.error);
-                  return;
+                alert.error(`Failed: ${response.data.error}`);
+                return;
               }
-      
+              alert.success('Service deleted!');
               navigate('/admin')
           }
           catch (error) {
@@ -45,6 +47,7 @@ function ServiceShow({ id, title }) {
 
 
 function Services({ sharedData }) {
+  const alert = useAlert();
   const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
@@ -81,10 +84,10 @@ function Services({ sharedData }) {
         });
 
         if (response.data.status === "error") {
-            alert(response.data.error);
+            alert.error(`Failed: ${response.data.error}`);
             return;
         }
-
+        alert.success('Service added!');
         navigate('/admin')
     }
     catch (error) {
