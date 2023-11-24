@@ -13,7 +13,7 @@
     "mongoose": "^8.0.1"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit  1",
     "dev": "nodemon index.js",
     "rest": "nodemon restApi.js"
