@@ -1,5 +1,3 @@
-// BlogSection.jsx
-
 import React from "react";
 import ReadMoreReact from "read-more-react";
 

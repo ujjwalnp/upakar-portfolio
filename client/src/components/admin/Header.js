@@ -1,20 +1,17 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHouse,
   faUser,
-  faFile,
+  faBolt,
   faBriefcase,
-  faImage,
-  faMessage,
+  faFile,
   faBars,
-  faMoon,
   faTimes,
-  faBolt
 } from "@fortawesome/free-solid-svg-icons";
-// import { faRegularMoon } from '@fortawesome/free-regular-svg-icons';
 
-function HeaderShow({ firstName, lastName }) {
+function HeaderShow() {
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -25,15 +22,26 @@ function HeaderShow({ firstName, lastName }) {
     setShowMenu(false);
   };
 
-  const linkAction = () => {
+  const linkAction = (id, isBlogEdit) => {
     closeMenu();
+    // Check if it's the BlogEdit page
+    if (isBlogEdit) {
+        navigate("/admin/blog");
+    } else {
+      // It's the AdminPage
+      const adminPageElement = document.getElementById(id);
+      if (adminPageElement) {
+        adminPageElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
+
   return (
     <header className="header" id="header">
       <nav className="nav container">
-        <a href="#" className="nav-logo">
-          Admin Pannel
-        </a>
+        <Link to="/admin" className="nav-logo">
+          Admin Panel
+        </Link>
 
         <div
           className={`nav-menu ${showMenu ? "show-menu" : ""}`}
@@ -41,36 +49,65 @@ function HeaderShow({ firstName, lastName }) {
         >
           <ul className="nav-list grid">
             <li className="nav-item">
-              <a href="/admin/#user" className="nav-link" onClick={linkAction}>
+              <span
+                role="button"
+                tabIndex={0}
+                className="nav-link"
+                onClick={() => linkAction("user", false)}
+              >
                 <FontAwesomeIcon icon={faUser} className="nav-icon" /> User
-              </a>
+              </span>
             </li>
             <li className="nav-item">
-              <a href="/admin/#about" className="nav-link" onClick={linkAction}>
+              <span
+                role="button"
+                tabIndex={0}
+                className="nav-link"
+                onClick={() => linkAction("about")}
+              >
                 <FontAwesomeIcon icon={faUser} className="nav-icon" /> About
-              </a>
+              </span>
             </li>
             <li className="nav-item">
-              <a href="/admin/#skills" className="nav-link" onClick={linkAction}>
+              <span
+                role="button"
+                tabIndex={0}
+                className="nav-link"
+                onClick={() => linkAction("skills")}
+              >
                 <FontAwesomeIcon icon={faBolt} className="nav-icon" /> Skills
-              </a>
+              </span>
             </li>
             <li className="nav-item">
-              <a href="/admin/#services" className="nav-link" onClick={linkAction}>
+              <span
+                role="button"
+                tabIndex={0}
+                className="nav-link"
+                onClick={() => linkAction("services")}
+              >
                 <FontAwesomeIcon icon={faBriefcase} className="nav-icon" />{" "}
                 Services
-              </a>
+              </span>
             </li>
             <li className="nav-item">
-              <a href="/admin/#security" className="nav-link" onClick={linkAction}>
-                <FontAwesomeIcon icon={faMessage} className="nav-icon" />{" "}
-                Security
-              </a>
+              <span
+                role="button"
+                tabIndex={0}
+                className="nav-link"
+                onClick={() => linkAction("security")}
+              >
+                <FontAwesomeIcon icon={faBolt} className="nav-icon" /> Security
+              </span>
             </li>
             <li className="nav-item">
-              <a href="/admin/blog" className="nav-link" onClick={linkAction}>
+              <span
+                role="button"
+                tabIndex={0}
+                className="nav-link"
+                onClick={() => linkAction("blog", true)}
+              >
                 <FontAwesomeIcon icon={faFile} className="nav-icon" /> Blog
-              </a>
+              </span>
             </li>
           </ul>
           <FontAwesomeIcon
@@ -82,7 +119,6 @@ function HeaderShow({ firstName, lastName }) {
         </div>
 
         <div className="nav-btns">
-          {/* <FontAwesomeIcon icon={faRegularMoon} className="fa-moon change-theme" id="theme-button" /> */}
           <div className="nav-toggle" id="nav-toggle" onClick={toggleMenu}>
             <FontAwesomeIcon icon={faBars} />
           </div>
@@ -92,15 +128,4 @@ function HeaderShow({ firstName, lastName }) {
   );
 }
 
-const dummyData = {
-    firstName: "Upakar",
-    lastName: "Dhakal",
-  };
-
-function Header() {
-  return (
-    <HeaderShow firstName={dummyData.firstName} lastName={dummyData.lastName} />
-  );
-}
-
-export default Header;
+export default HeaderShow;

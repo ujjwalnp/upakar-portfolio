@@ -72,7 +72,6 @@ function Footer({ sharedData }) {
   useEffect(() => {
     if (sharedData) {
         setFooterData(sharedData);
-        console.log(sharedData);
     }
   }, [sharedData]);
   return (

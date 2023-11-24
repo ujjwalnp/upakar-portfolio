@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { setSharedData } from "./redux/actions/apiActions";
-import { setBlogData } from "./redux/actions/blogActions"
 import env from "react-dotenv";
 import axios from "axios";
-import { useAlert, transitions, positions, Provider as AlertProvider } from 'react-alert';
+import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 import "./assets/css/App.css";
 import HomePage from "./pages/HomePage";
