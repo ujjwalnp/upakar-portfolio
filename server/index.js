@@ -34,6 +34,6 @@ server.use('/api/user', userRouter.router)
 server.use('/api/blog', blogRouter.router)
 
 /* SERVER LISTEN */
-server.listen(process.env.SERVER_PORT, () => {
-  console.log('Server Started')
+server.listen(process.env.PORT || process.env.SERVER_PORT, () => {
+  console.log(`Server Started on port: ${process.env.PORT || process.env.SERVER_PORT}`)
 })
