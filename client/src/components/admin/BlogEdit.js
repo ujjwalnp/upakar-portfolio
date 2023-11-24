@@ -1,62 +1,11 @@
 import React, { useState, useEffect } from "react";
-import ReadMoreReact from "read-more-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import env from "react-dotenv";
 import Cookies from "js-cookie";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
-import "../../assets/css/BlogSection.css";
-
-function BlogSection({ category, date, title, description }) {
-  return (
-    <section className="blog-section">
-      <div className="blog-container">
-        <div className="blog-post">
-          <div className="blog-meta">
-            <span className="blog-category">CATEGORY</span>
-            <span className="blog-category-body">- {category}</span>
-            <span className="blog-date">{date}</span>
-          </div>
-          <div className="blog-content">
-            <h2 className="blog-title">{title}</h2>
-            <p className="blog-description">
-              <ReadMoreReact
-                text={description}
-                min={280}
-                ideal={290}
-                max={50000}
-                readMoreText={
-                  <span className="blog-learn-more">
-                    Learn More
-                    <svg
-                      className="blog-icon"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M5 12h14"></path>
-                      <path d="M12 5l7 7-7 7"></path>
-                    </svg>
-                  </span>
-                }
-              />
-            </p>
-            <div className="skills-content container skills-name">
-              <a href="#contact" className="button-flex">
-                Edit
-                <FontAwesomeIcon icon={faPen} className="button-icon" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+import BlogSection from "./BlogSection";
 
 function BlogEditComponent() {
   const navigate = useNavigate();
@@ -66,49 +15,100 @@ function BlogEditComponent() {
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [editingBlog, setEditingBlog] = useState(null);
 
   const handleCategoryChange = (e) => {
     setCategory(e.target.value);
   }
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   }
+
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    addBlog();
-  };
+  const handleEdit = (id, field, value) => {
+    setEditingBlog((prevBlog) => ({
+      ...prevBlog,
+      [field]: value,
+    }));
+  }
 
-  const addBlog = async() => {
+  const handleCancelEdit = () => {
+    setEditingBlog(null);
+  }
+
+  const handleSave = async (id, updatedCategory, updatedTitle, updatedDescription) => {
+    try {
+      const endpoint = `/api/blog/${id}`;
+      const response = await axios.put(apiUrl + endpoint, {
+        category: updatedCategory,
+        title: updatedTitle,
+        description: updatedDescription,
+      }, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+
+      if (response.data.status === "error") {
+        alert(response.data.error);
+        return;
+      }
+
+      // Update local state after successful save
+      const updatedBlogs = blogs.map((blog) => (blog.id === id ? editingBlog : blog));
+      setBlogs(updatedBlogs);
+      setEditingBlog(null);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const endpoint = '/api/blog/';
-      console.log(apiUrl + endpoint)
-
       const response = await axios.post(apiUrl + endpoint, {
         category: category,
         title: title,
-        description: description
-      },
-      {
-          headers: {
-              Authorization: `Bearer ${ Cookies.get('token') }`,
-          },
-      }
-      );
+        description: description,
+      }, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
 
       if (response.data.status === "error") {
-          // Reset the values on unsuccessful authentication
-          alert(response.data.error);
-          return;
+        alert(response.data.error);
+        return;
       }
-      navigate('/admin/blog')
-  }
-  catch (error) {
+
+      // Update local state after successful save
+      setBlogs((prevBlogs) => [
+        ...prevBlogs,
+        {
+          id: response.data.blog.id,
+          category: response.data.blog.category,
+          title: response.data.blog.title,
+          description: response.data.blog.description,
+          createdAt: new Date(response.data.blog.createdAt).toLocaleDateString('en-US', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'short',
+          }),
+        },
+      ]);
+
+      // Clear the input fields after successful save
+      setCategory("");
+      setTitle("");
+      setDescription("");
+    } catch (error) {
       console.log(error);
-  }
+    }
   }
 
   useEffect(() => {
@@ -118,17 +118,18 @@ function BlogEditComponent() {
         const response = await axios.get(apiUrl + endpoint, {
           headers: {
             Authorization: `Bearer ${Cookies.get('token')}`,
-          }
+          },
         });
         const blogsData = response.data.blogs;
-        const formattedBlogs = blogsData.map(blog => {
-          return {
-            ...blog,
-            createdAt: new Date(blog.createdAt).toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'short' }) //, year: 'numeric'
-          };
-        });
+        const formattedBlogs = blogsData.map((blog) => ({
+          ...blog,
+          createdAt: new Date(blog.createdAt).toLocaleDateString('en-US', {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'short',
+          }),
+        }));
         setBlogs(formattedBlogs);
-        
       } catch (error) {
         console.log(error);
       }
@@ -136,13 +137,9 @@ function BlogEditComponent() {
 
     fetchBlogs();
   }, []);
+
   return (
     <div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <div className="blog-container">
         <form className="container">
           <div className="field">
@@ -150,12 +147,12 @@ function BlogEditComponent() {
               type="text"
               name="category"
               className="input"
-              value={category}
-              onChange={handleCategoryChange}
+              value={editingBlog ? editingBlog.category : category}
+              onChange={editingBlog ? (e) => handleEdit(editingBlog.id, 'category', e.target.value) : handleCategoryChange}
               placeholder=" "
             />
             <label htmlFor="category" className="label">
-            Category
+              Category
             </label>
           </div>
           <div className="field">
@@ -163,8 +160,8 @@ function BlogEditComponent() {
               type="text"
               name="title"
               className="input"
-              value={title}
-              onChange={handleTitleChange}
+              value={editingBlog ? editingBlog.title : title}
+              onChange={editingBlog ? (e) => handleEdit(editingBlog.id, 'title', e.target.value) : handleTitleChange}
               placeholder=" "
             />
             <label htmlFor="title" className="label">
@@ -176,8 +173,8 @@ function BlogEditComponent() {
               type="text"
               name="description"
               className="input"
-              value={description}
-              onChange={handleDescriptionChange}
+              value={editingBlog ? editingBlog.description : description}
+              onChange={editingBlog ? (e) => handleEdit(editingBlog.id, 'description', e.target.value) : handleDescriptionChange}
               placeholder=" "
             />
             <label htmlFor="description" className="label">
@@ -187,20 +184,24 @@ function BlogEditComponent() {
         </form>
 
         <div className="form-action ">
-          
-          <button type="submit" className="skills-content container skills-name button-flex" onClick={handleSubmit}>
-            Add
+          <button type="submit" className="skills-content container skills-name button-flex" onClick={editingBlog ? () => handleSave(editingBlog.id, editingBlog.category, editingBlog.title, editingBlog.description) : handleSubmit}>
+            {editingBlog ? 'Save' : 'Add'}
             <FontAwesomeIcon icon={faPlusCircle} className="button-icon" />
           </button>
-          
         </div>
       </div>
       {blogs.map((blog) => (
         <BlogSection
+          key={blog.id}
+          id={blog.id}
           category={blog.category}
           date={blog.createdAt}
           title={blog.title}
           description={blog.description}
+          onEdit={handleEdit}
+          onSave={handleSave}
+          onCancelEdit={handleCancelEdit}
+          isEditing={editingBlog && editingBlog.id === blog.id}
         />
       ))}
     </div>
