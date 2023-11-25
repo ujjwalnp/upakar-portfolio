@@ -16,7 +16,7 @@ exports.createBlog = async(req, res)=>{
         // saves newBlog
         await newBlog.save()
 
-        res.status(201).json({ nessage: 'Blog created successfully', newBlog})
+        res.status(201).json({ message: 'Blog created successfully', newBlog})
     }
     catch(error) {
         res.status(409).json({ message: error.message })

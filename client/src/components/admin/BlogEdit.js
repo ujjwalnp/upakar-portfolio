@@ -43,7 +43,7 @@ function BlogEditComponent() {
   const handleSave = async (id, updatedCategory, updatedTitle, updatedDescription) => {
     try {
       const endpoint = `/api/blog/${id}`;
-      const response = await axios.put(apiUrl + endpoint, {
+      const response = await axios.patch(apiUrl + endpoint, {
         category: updatedCategory,
         title: updatedTitle,
         description: updatedDescription,
@@ -80,27 +80,27 @@ function BlogEditComponent() {
           Authorization: `Bearer ${Cookies.get('token')}`,
         },
       });
-
+      console.log(response.data.newBlog);
+        // Update local state after successful save
+        setBlogs((prevBlogs) => [
+            {
+                id: response.data.newBlog._id,
+                category: response.data.newBlog.category,
+                title: response.data.newBlog.title,
+                description: response.data.newBlog.description,
+                createdAt: new Date(response.data.newBlog.createdAt).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'short',
+                }),
+            },
+            ...prevBlogs,
+        ]);
+        
       if (response.data.status === "error") {
         alert(response.data.error);
         return;
       }
-
-      // Update local state after successful save
-      setBlogs((prevBlogs) => [
-        ...prevBlogs,
-        {
-          id: response.data.blog.id,
-          category: response.data.blog.category,
-          title: response.data.blog.title,
-          description: response.data.blog.description,
-          createdAt: new Date(response.data.blog.createdAt).toLocaleDateString('en-US', {
-            weekday: 'long',
-            day: 'numeric',
-            month: 'short',
-          }),
-        },
-      ]);
 
       // Clear the input fields after successful save
       setCategory("");
