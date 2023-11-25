@@ -2,7 +2,7 @@
     position: relative;
     top: 5rem;
     text-align: left;
-    color: #374151;
+    color: var(--text-color); /* Use CSS variable for text color */
     font-family: 'Arial', sans-serif;
   }
   
@@ -23,18 +23,18 @@
   
   .blog-category {
     font-weight: bold;
-    color: #4b5563;
+    color: var(--category-color); /* Use CSS variable for category color */
   }
-
-   .blog-category-body {
+  
+  .blog-category-body {
     font-style: italic;
-    color: #4b5563;
-   }
+    color: var(--category-color); /* Use CSS variable for category color */
+  }
   
   .blog-date {
     margin-top: 4px;
     font-size: 14px;
-    color: #6b7280;
+    color: var(--date-color); /* Use CSS variable for date color */
   }
   
   .blog-content {
@@ -44,20 +44,20 @@
   .blog-title {
     font-size: 24px;
     font-weight: bold;
-    color: #1f2937;
+    color: var(--title-color); /* Use CSS variable for title color */
     margin-bottom: 16px;
   }
   
   .blog-description {
     font-size: 16px;
     line-height: 1.5;
-    color: #4b5563;
+    color: var(--text-color); /* Use CSS variable for text color */
   }
   
   .blog-learn-more {
     display: inline-flex;
     align-items: center;
-    color: #6b46c1;
+    color: var(--link-color); /* Use CSS variable for link color */
     text-decoration: none;
     cursor: pointer;
   }

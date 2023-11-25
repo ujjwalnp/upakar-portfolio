@@ -7,10 +7,10 @@ import ServiceContact from "../components/ServiceContact";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
-function HomePage() {
+function HomePage({ onToggleTheme }) {
   return (
     <>
-      <Header />
+      <Header onToggleTheme={onToggleTheme} />
       <Home />
       <About />
       <Skills />

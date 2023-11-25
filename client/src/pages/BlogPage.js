@@ -4,10 +4,10 @@ import ServiceContact from "../components/ServiceContact";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 
-function BlogPage() {
+function BlogPage({ onToggleTheme }) { 
   return (
     <>
-      <Header />
+      <Header onToggleTheme={onToggleTheme} />
       <Blog />
       <ServiceContact />
       <Contact />

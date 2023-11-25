@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { setSharedData } from "./redux/actions/apiActions";
@@ -22,6 +22,9 @@ const alertOptions = {
 
 function App({ setSharedData }) {
   const apiUrl = env.APP_API_BASE_URL;
+
+  const [theme, setTheme] = useState('light');
+
   useEffect(() => {
       const fetchUserDataAndUpdateStore = async () => {
         const endPoint = '/api/user';
@@ -30,22 +33,46 @@ function App({ setSharedData }) {
         const userData = apiResponse.data.user;
         if (apiResponse) {
           setSharedData(userData);
+          // Update data in localStorage upon successful API call
+          localStorage.setItem('userData', JSON.stringify(userData));
         }
       } catch (error) {
         console.error("Error updating store:", error);
+        // Fetch data from localStorage if API call fails
+        const savedUserData = localStorage.getItem('userData');
+        if (savedUserData) {
+          setSharedData(JSON.parse(savedUserData));
+        }
       }
     };
     
     fetchUserDataAndUpdateStore();
   }, [setSharedData]);
 
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.body.classList.toggle('dark-theme', newTheme === 'dark');
+    // Save the theme preference in localStorage
+    localStorage.setItem('theme', newTheme);
+  };
+
+  // Set the initial theme on component mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setTheme(savedTheme);
+      document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+    }
+  }, []);
+
   return (
     <AlertProvider template={AlertTemplate} {...alertOptions}>
-        <div className="App">
+        <div className={`App ${theme}-theme`}>
         <BrowserRouter>
             <Routes>
-            <Route path="/" exact element={<HomePage />} />
-            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/" exact element={<HomePage onToggleTheme={toggleTheme} />} />
+            <Route path="/blog" element={<BlogPage onToggleTheme={toggleTheme} />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/blog" element={<BlogEdit />} />

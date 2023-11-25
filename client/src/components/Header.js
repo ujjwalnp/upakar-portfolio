@@ -13,9 +13,8 @@ import {
   faTimes,
   faBolt
 } from "@fortawesome/free-solid-svg-icons";
-// import { faRegularMoon } from '@fortawesome/free-regular-svg-icons';
 
-function HeaderShow({ firstName, lastName }) {
+function HeaderShow({ firstName, lastName, onToggleTheme }) {
   const [showMenu, setShowMenu] = useState(false);
 
   const toggleMenu = () => {
@@ -28,6 +27,11 @@ function HeaderShow({ firstName, lastName }) {
 
   const linkAction = () => {
     closeMenu();
+  };
+
+  const toggleTheme = () => {
+    // Call the callback function passed from App.js
+    onToggleTheme();
   };
   return (
     <header className="header" id="header">
@@ -83,7 +87,7 @@ function HeaderShow({ firstName, lastName }) {
         </div>
 
         <div className="nav-btns">
-          {/* <FontAwesomeIcon icon={faRegularMoon} className="fa-moon change-theme" id="theme-button" /> */}
+          <FontAwesomeIcon icon={faMoon} className="fa-moon change-theme" id="theme-button" onClick={toggleTheme} />
           <div className="nav-toggle" id="nav-toggle" onClick={toggleMenu}>
             <FontAwesomeIcon icon={faBars} />
           </div>
@@ -93,7 +97,7 @@ function HeaderShow({ firstName, lastName }) {
   );
 }
 
-function Header({ sharedData }) {
+function Header({ sharedData, onToggleTheme }) {
     const [headerData, setHeaderData] = useState({});
     useEffect(() => {
         if (sharedData) {
@@ -103,7 +107,11 @@ function Header({ sharedData }) {
     
     
     return (
-    <HeaderShow firstName={headerData.firstName} lastName={headerData.lastName} />
+    <HeaderShow 
+        firstName={headerData.firstName} 
+        lastName={headerData.lastName}
+        onToggleTheme={onToggleTheme}
+     />
   );
 }
 
