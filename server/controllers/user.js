@@ -129,8 +129,6 @@ exports.updateUserDetails = async (req, res) => {
       // handle admin: about section request
       if (req.body.about) {
         const aboutData = req.body.about
-
-        console.log(aboutData)
   
         if (aboutData.about && aboutData.about.trim() !== '') {
           user.about.about = aboutData.about
@@ -172,7 +170,6 @@ exports.deleteSkill = async (req, res) => {
     const { userId } = req.body
 
     try {
-        console.log(id, userId)
         const user = await User.findById(userId)
 
         if (!user) {
@@ -182,7 +179,6 @@ exports.deleteSkill = async (req, res) => {
         const skillIndex = user.skills.findIndex(skill => skill._id.toString() === id)
 
         if (skillIndex === -1) {
-            console.log('Skill not found in user.skills:', user.skills)
             return res.status(404).json({ message: 'Skill not found' })
         }
         user.skills.splice(skillIndex, 1)
