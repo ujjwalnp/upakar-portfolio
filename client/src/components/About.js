@@ -13,21 +13,21 @@ function AboutShow({ about, experience_years, happy_clients, companies_worked, r
 
           <div className="about-info">
             <div>
-              <span className="about-info-title">{experience_years}</span>
+              <span className="about-info-title">{experience_years}+</span>
               <span className="about-info-name">
                 Years <br />
                 experience
               </span>
             </div>
             <div>
-              <span className="about-info-title">{happy_clients}</span>
+              <span className="about-info-title">{happy_clients}+</span>
               <span className="about-info-name">
                 Happy <br />
                 Clients
               </span>
             </div>
             <div>
-              <span className="about-info-title">{companies_worked}</span>
+              <span className="about-info-title">{companies_worked}+</span>
               <span className="about-info-name">
                 Companies <br />
                 worked
