@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGears, faUmbrella, faPen, faBolt, faShieldHalved, faCircleUser, faList, faLock } from "@fortawesome/free-solid-svg-icons";
-import "../assets/css/style.css";
-
 const getIcon = (index) => {
   const allIcons = [ faPen, faBolt, faUmbrella, faGears, faShieldHalved, faCircleUser, faList, faLock ];
   return allIcons[index];
