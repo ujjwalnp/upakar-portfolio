@@ -3,12 +3,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import env from "react-dotenv";
 import Cookies from "js-cookie";
+import { useAlert } from "react-alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import BlogSection from "./BlogSection";
 
 function BlogEditComponent() {
   const navigate = useNavigate();
+  const alert = useAlert();
   const apiUrl = env.APP_API_BASE_URL;
 
   const [blogs, setBlogs] = useState([]);
@@ -40,7 +42,7 @@ function BlogEditComponent() {
     setEditingBlog(null);
   }
 
-  const handleSave = async (id, updatedCategory, updatedTitle, updatedDescription) => {
+  const handleEditSave = async (id, updatedCategory, updatedTitle, updatedDescription) => {
     try {
       const endpoint = `/api/blog/${id}`;
       const response = await axios.patch(apiUrl + endpoint, {
@@ -67,7 +69,7 @@ function BlogEditComponent() {
     }
   }
 
-  const handleSubmit = async (e) => {
+  const handleAddBlog = async (e) => {
     e.preventDefault();
     try {
       const endpoint = '/api/blog/';
@@ -80,7 +82,6 @@ function BlogEditComponent() {
           Authorization: `Bearer ${Cookies.get('token')}`,
         },
       });
-      console.log(response.data.newBlog);
         // Update local state after successful save
         setBlogs((prevBlogs) => [
             {
@@ -98,9 +99,10 @@ function BlogEditComponent() {
         ]);
         
       if (response.data.status === "error") {
-        alert(response.data.error);
+        alert.error(`Failed: ${response.data.error}`);
         return;
       }
+      alert.success('Blog added!');
 
       // Clear the input fields after successful save
       setCategory("");
@@ -184,7 +186,7 @@ function BlogEditComponent() {
         </form>
 
         <div className="form-action ">
-          <button type="submit" className="skills-content container skills-name button-flex" onClick={editingBlog ? () => handleSave(editingBlog.id, editingBlog.category, editingBlog.title, editingBlog.description) : handleSubmit}>
+          <button type="submit" className="skills-content container skills-name button-flex" onClick={editingBlog ? () => handleEditSave(editingBlog.id, editingBlog.category, editingBlog.title, editingBlog.description) : handleAddBlog}>
             {editingBlog ? 'Save' : 'Add'}
             <FontAwesomeIcon icon={faPlusCircle} className="button-icon" />
           </button>
@@ -199,7 +201,7 @@ function BlogEditComponent() {
           title={blog.title}
           description={blog.description}
           onEdit={handleEdit}
-          onSave={handleSave}
+          onSave={handleEditSave}
           onCancelEdit={handleCancelEdit}
           isEditing={editingBlog && editingBlog.id === blog.id}
         />
