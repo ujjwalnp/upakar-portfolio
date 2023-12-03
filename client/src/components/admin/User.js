@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
 import env from "react-dotenv";
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { useAlert } from 'react-alert';
+import axios from "axios";
+import Cookies from "js-cookie";
+import { useAlert } from "react-alert";
 
 function User() {
   const alert = useAlert();
-  const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
   const [firstName, setFirstName] = useState("");
@@ -41,36 +39,44 @@ function User() {
     updateUserDetails();
   };
 
-  const updateUserDetails = async() => {
+  const updateUserDetails = async () => {
     try {
-        const endpoint = `/api/user/${ Cookies.get('userId') }/`
-        const response = await axios.patch(apiUrl + endpoint, {
-            firstName: firstName,
-            lastName: lastName,
-            bio: bio,
-            contact: {
-                email: email,
-                linkedin: linkedin,
-                facebook: facebook
-            }
+      const endpoint = `/api/user/${Cookies.get("userId")}/`;
+      const response = await axios.patch(
+        apiUrl + endpoint,
+        {
+          firstName: firstName,
+          lastName: lastName,
+          bio: bio,
+          contact: {
+            email: email,
+            linkedin: linkedin,
+            facebook: facebook,
+          },
         },
         {
-            headers: {
-              Authorization: `Bearer ${ Cookies.get('token') }`,
-            },
-        });
-
-        if (response.data.status === "error") {
-            alert.error(`Failed: ${response.data.error}`);
-            return;
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
         }
-        alert.success('User details updated!');
-        navigate('/admin')
+      );
+
+      if (response.data.status === "error") {
+        alert.error(`Failed: ${response.data.error}`);
+        return;
+      }
+      alert.success("User details updated!");
+      // reset all values
+      setFirstName("");
+      setLastName("");
+      setBio("");
+      setEmail("");
+      setLinkedin("");
+      setFacebook("");
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) {
-        console.log(error);
-    }
-  }
+  };
 
   return (
     <section className="about section" id="user">
@@ -78,50 +84,90 @@ function User() {
       <span className="section-subtitle">Personal Info</span>
 
       <form className="container" onSubmit={handleSubmit}>
-          <div className="field">
-            <input type="text" name="firstName" className="input" value={firstName} onChange={handleFirstNameChange} placeholder=" " />
-            <label htmlFor="firstName" className="label">
-                First Name
-            </label>
-          </div>
-          <div className="field">
-            <input type="text" name="lastName" className="input" value={lastName} onChange={handleLastNameChange} placeholder=" " />
-            <label htmlFor="lastName" className="label">
-                Last Name
-            </label>
-          </div>
-          <div className="field">
-            <input type="text" name="bio" className="input" value={bio} onChange={handleBioChange} placeholder=" " />
-            <label htmlFor="bio" className="label">
-                Bio
-            </label>
-          </div>
-          <div className="field">
-            <input type="email" name="email" className="input" value={email} onChange={handleEmailChange} placeholder=" " />
-            <label htmlFor="email" className="label">
-                Email
-            </label>
-          </div>
-          <div className="field">
-            <input type="text" name="linkedin" className="input" value={linkedin} onChange={handleLinkedinChange} placeholder=" " />
-            <label htmlFor="linkedin" className="label">
-                Linkedin
-            </label>
-          </div>
-          <div className="field">
-            <input type="text" name="facebook" className="input" value={facebook} onChange={handleFacebookChange} placeholder=" " />
-            <label htmlFor="facebook" className="label">
-                Facebook
-            </label>
-          </div>
-
-          <div className="form-action">
-            <button type="submit" className="btn primary">
-              Submit
-            </button>   
-          </div>
-        </form>
-    
+        <div className="field">
+          <input
+            type="text"
+            name="firstName"
+            className="input"
+            value={firstName}
+            onChange={handleFirstNameChange}
+            placeholder=" "
+          />
+          <label htmlFor="firstName" className="label">
+            First Name
+          </label>
+        </div>
+        <div className="field">
+          <input
+            type="text"
+            name="lastName"
+            className="input"
+            value={lastName}
+            onChange={handleLastNameChange}
+            placeholder=" "
+          />
+          <label htmlFor="lastName" className="label">
+            Last Name
+          </label>
+        </div>
+        <div className="field">
+          <input
+            type="text"
+            name="bio"
+            className="input"
+            value={bio}
+            onChange={handleBioChange}
+            placeholder=" "
+          />
+          <label htmlFor="bio" className="label">
+            Bio
+          </label>
+        </div>
+        <div className="field">
+          <input
+            type="email"
+            name="email"
+            className="input"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder=" "
+          />
+          <label htmlFor="email" className="label">
+            Email
+          </label>
+        </div>
+        <div className="field">
+          <input
+            type="text"
+            name="linkedin"
+            className="input"
+            value={linkedin}
+            onChange={handleLinkedinChange}
+            placeholder=" "
+          />
+          <label htmlFor="linkedin" className="label">
+            Linkedin
+          </label>
+        </div>
+        <div className="field">
+          <input
+            type="text"
+            name="facebook"
+            className="input"
+            value={facebook}
+            onChange={handleFacebookChange}
+            placeholder=" "
+          />
+          <label htmlFor="facebook" className="label">
+            Facebook
+          </label>
+        </div>
+        <div className="form-action">
+          <button type="submit" className="btn primary">
+            Submit
+          </button>
+        </div>
+      </form>
     </section>
   );
 }

@@ -8,7 +8,7 @@ exports.addSkill = async(req, res)=>{
         const { value } = req.body
 
         // find the user
-        const user = await User.findById(userId)
+        const user = await User.findById(userId).select('-password')
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
@@ -20,7 +20,10 @@ exports.addSkill = async(req, res)=>{
         // save the user
         await user.save()
 
-        res.status(201).json({ message: 'Skill added successfully', user })
+        // find the recently added skill from user.skills
+        const skill = user.skills[user.skills.length - 1]
+
+        res.status(201).json({ message: 'Skill added successfully', skill: skill })
 
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -33,7 +36,7 @@ exports.addService = async(req, res)=>{
         const { index, title, description } = req.body
 
         // find the user
-        const user = await User.findById(userId)
+        const user = await User.findById(userId).select('-password')
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
@@ -45,7 +48,10 @@ exports.addService = async(req, res)=>{
         // save the user
         await user.save()
 
-        res.status(201).json({ message: 'Service added successfully', user })
+        // find the recently added skill from user.skills
+        const service = user.services[user.services.length - 1]
+
+        res.status(201).json({ message: 'Service added successfully', service: service })
 
     } catch (error) {
         res.status(500).json({ message: error.message })

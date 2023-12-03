@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import env from "react-dotenv";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -8,10 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useAlert } from "react-alert";
 
-function ServiceShow({ id, title }) {
+function ServiceShow({ id, title, onDelete }) {
     const alert = useAlert();
     const apiUrl = env.APP_API_BASE_URL;
-    const navigate = useNavigate();
     const deleteService = async() => {
           try {
               const endpoint = `/api/user/service/${ id }/`
@@ -30,7 +28,7 @@ function ServiceShow({ id, title }) {
                 return;
               }
               alert.success('Service deleted!');
-              navigate('/admin')
+              onDelete(id);
           }
           catch (error) {
               console.log(error);
@@ -48,7 +46,6 @@ function ServiceShow({ id, title }) {
 
 function Services({ sharedData }) {
   const alert = useAlert();
-  const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
   const [services, setServices] = useState([]);
@@ -61,6 +58,9 @@ function Services({ sharedData }) {
 
   const handleDescriptionChange = (e) => {
     setDescription(e.target.value);
+  };
+  const deleteService = (id) => {
+    setServices((prevServices) => prevServices.filter((service) => service._id !== id));
   };
 
   const handleSubmit = (e) => {
@@ -88,7 +88,15 @@ function Services({ sharedData }) {
             return;
         }
         alert.success('Service added!');
-        navigate('/admin')
+        setServices((prevServices) => [
+            ...prevServices,
+            {
+            _id: response.data.service._id,
+            title: response.data.service.title,
+            }
+        ])
+        setTitle('');
+        setDescription('');
     }
     catch (error) {
         console.log(error);
@@ -105,7 +113,7 @@ function Services({ sharedData }) {
       <h2 className="section-title">Services</h2>
       <span className="section-subtitle">My offering</span>
       {services.map((service) => (
-        <ServiceShow id={service._id} title={service.title} />
+        <ServiceShow id={service._id} title={service.title} onDelete={deleteService} />
       ))}
       <form className="container" onSubmit={handleSubmit}>
         <div className="field">

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import env from "react-dotenv";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -7,11 +6,11 @@ import { connect } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useAlert } from "react-alert";
+import { setSharedData } from "../../redux/actions/apiActions";
 
-function SkillShow({ id, value }) {
+function SkillShow({ id, value, onDelete }) {
     const alert = useAlert();
     const apiUrl = env.APP_API_BASE_URL;
-    const navigate = useNavigate();
     const deleteSkill = async() => {
           try {
               const endpoint = `/api/user/skill/${ id }/`
@@ -30,7 +29,7 @@ function SkillShow({ id, value }) {
                 return;
               }
               alert.success('Skill deleted!');
-              navigate('/admin')
+              onDelete(id);
           }
           catch (error) {
               console.log(error);
@@ -48,7 +47,6 @@ function SkillShow({ id, value }) {
 
 function Skills({ sharedData }) {
   const alert = useAlert();
-  const navigate = useNavigate();
   const apiUrl = env.APP_API_BASE_URL;
 
   const [skills, setSkills] = useState([]);
@@ -56,6 +54,9 @@ function Skills({ sharedData }) {
 
   const handleValueChange = (e) => {
     setValue(e.target.value);
+  };
+  const deleteSkill = (id) => {
+    setSkills((prevServices) => prevServices.filter((service) => service._id !== id));
   };
 
   const handleSubmit = (e) => {
@@ -81,7 +82,14 @@ function Skills({ sharedData }) {
             return;
         }
         alert.success('Skill added!');
-        navigate('/admin')
+        setSkills((prevSkills) => [
+            ...prevSkills,
+            {
+                _id: response.data.skill._id,
+                value: response.data.skill.value,
+            }
+        ])  
+        setValue('');
     }
     catch (error) {
         console.log(error);
@@ -98,7 +106,7 @@ function Skills({ sharedData }) {
       <h2 className="section-title">Skills</h2>
       <span className="section-subtitle">My Technical Skills</span>
       {skills.map((skill) => (
-        <SkillShow id={skill._id} value={skill.value} />
+        <SkillShow id={skill._id} value={skill.value} onDelete={deleteSkill} />
       ))}
       <form className="container" onSubmit={handleSubmit}>
         <div className="field">
