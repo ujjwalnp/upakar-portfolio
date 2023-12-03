@@ -22,6 +22,10 @@ const serviceSchema = new Schema({
 }) 
 
 const userSchema = new Schema({
+  type: {
+    type: String,
+    required: true,
+  },
   username: {
     type: String,
     required: true,
