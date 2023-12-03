@@ -27,6 +27,10 @@ function App({ setSharedData }) {
 
   useEffect(() => {
       const fetchUserDataAndUpdateStore = async () => {
+        const savedUserData = localStorage.getItem('userData');
+        if (savedUserData) {
+          setSharedData(JSON.parse(savedUserData));
+        }
         const endPoint = '/api/user';
         try {
         const apiResponse = await axios.get(apiUrl + endPoint);
@@ -38,11 +42,6 @@ function App({ setSharedData }) {
         }
       } catch (error) {
         console.error("Error updating store:", error);
-        // Fetch data from localStorage if API call fails
-        const savedUserData = localStorage.getItem('userData');
-        if (savedUserData) {
-          setSharedData(JSON.parse(savedUserData));
-        }
       }
     };
     
