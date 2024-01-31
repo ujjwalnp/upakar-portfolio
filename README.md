@@ -31,22 +31,22 @@ Welcome to the Portfolio Website project! This project is designed to be a hassl
 
 ## Getting Started
 
-To get started with your portfolio website, follow these steps:
+To get started with our portfolio website, follow these steps:
 
 1. **Clone the Repository:**
    ```sh
-   git clone [repository-url]
+   git clone https://github.com/ujjwalnp/upakar-portfolio.git
     ```
     
 2. **Install Dependencies:**
    ```sh
-        cd <repo-name>/client
+        cd upakar-portfolio/client
         yarn install
         cd ../server
         yarn install
     ```
 3. **Create .env File:**
-    - Create a .env file in the root directory based on the provided .env-example file.
+    - Create a .env file in the client and server root directory based on the provided .env.example file.
 
 4. **Configure MongoDB:**
     - Set up a MongoDB database and update the connection details in the server's configuration.
@@ -69,7 +69,3 @@ If you have suggestions or want to contribute to the development of this project
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
-
-```sh
-This addition emphasizes the importance of creating a `.env` file and provides a reference to the `.env-example` file for users to follow.
-```
