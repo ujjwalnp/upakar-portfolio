@@ -14,6 +14,11 @@ exports.verifyToken = async (req, res, next) => {
 
     const verified = jwt.verify(token, process.env.JWT_SECRET)
     req.user = verified
+
+    const { id, username } = verified
+    req.id = id
+    req.username = username
+
     next()
   } catch (error) {
     // Handle different types of errors
