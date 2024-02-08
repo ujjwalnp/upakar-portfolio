@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
+const rateLimit = require('express-rate-limit')
 const authController = require('../controllers/auth')
-const rateLimiter = require('../middlewares/rateLimiter')
 
 router
   /* LOGIN_USER API */
-  .post('/', rateLimiter , authController.loginUser)
+  .post('/', rateLimit({ windowMs: 60 * 1000, max: 5 }), authController.loginUser)
 //   .post('/signup', require('../controllers/createUser').createUser)
 
 
