@@ -1,22 +1,22 @@
 const express = require('express')
 const router = express.Router()
-const rateLimit = require('express-rate-limit')
+const { rateLimitPerRequestType } = require('../middlewares/rateLimit')
 const userController = require('../controllers/user')
 const { verifyToken } = require('../middlewares/auth')
 
 router
 /* CREATE */
-    .post('/skill/:userId', verifyToken, rateLimit({ windowMs: 60 * 1000, max: 25 }), userController.addSkill)
-    .post('/service/:userId', verifyToken, rateLimit({ windowMs: 60 * 1000, max: 25 }), userController.addService)
+    .post('/skill/:userId', verifyToken, rateLimitPerRequestType('api'), userController.addSkill)
+    .post('/service/:userId', verifyToken, rateLimitPerRequestType('api'), userController.addService)
 
 /* READ */
-    .get('/', rateLimit({ windowMs: 60 * 1000, max: 10 }), userController.getUserDetails)
+    .get('/', rateLimitPerRequestType('general'), userController.getUserDetails)
 
 /* UPDATE */
-    .patch('/:userId', verifyToken, rateLimit({ windowMs: 60 * 1000, max: 25 }), userController.updateUserDetails)
+    .patch('/:userId', verifyToken, rateLimitPerRequestType('api'), userController.updateUserDetails)
 
 /* DELETE */
-    .delete('/skill/:id', verifyToken, rateLimit({ windowMs: 60 * 1000, max: 25 }), userController.deleteSkill)
-    .delete('/service/:id', verifyToken, rateLimit({ windowMs: 60 * 1000, max: 25 }), userController.deleteService)
+    .delete('/skill/:id', verifyToken, rateLimitPerRequestType('api'), userController.deleteSkill)
+    .delete('/service/:id', verifyToken, rateLimitPerRequestType('api'), userController.deleteService)
 
 exports.router = router
