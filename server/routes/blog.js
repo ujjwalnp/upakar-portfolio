@@ -1,20 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const bogController = require('../controllers/blog')
-const { verifyToken } = require('../middlewares/auth')
 
 router
 /* CREATE */
-    .post('/', verifyToken, bogController.createBlog)
+    .post('/', bogController.createBlog)
 
 /* READ */
     .get('/', bogController.getAllBlogs)
     .get('/:id', bogController.getSpecificBlog)
 
 /* UPDATE */
-    .patch('/:id', verifyToken, bogController.updateBlog)
+    .patch('/:id', bogController.updateBlog)
 
 /* DELETE */
-    .delete('/:id', verifyToken, bogController.deleteBlog)
+    .delete('/:id', bogController.deleteBlog)
 
 module.exports = router
