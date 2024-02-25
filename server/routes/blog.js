@@ -3,17 +3,13 @@ const router = express.Router()
 const bogController = require('../controllers/blog')
 
 router
-/* CREATE */
+    /* CREATE */
     .post('/', bogController.createBlog)
 
-/* READ */
-    .get('/', bogController.getAllBlogs)
-    .get('/:id', bogController.getSpecificBlog)
-
-/* UPDATE */
+    /* UPDATE */
     .patch('/:id', bogController.updateBlog)
 
-/* DELETE */
+    /* DELETE */
     .delete('/:id', bogController.deleteBlog)
 
 module.exports = router

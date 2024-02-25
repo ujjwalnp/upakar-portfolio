@@ -7,9 +7,6 @@ router
     .post('/skill/:userId', userController.addSkill)
     .post('/service/:userId', userController.addService)
 
-/* READ */
-    .get('/', userController.getUserDetails)
-
 /* UPDATE */
     .patch('/:userId', userController.updateUserDetails)
 
