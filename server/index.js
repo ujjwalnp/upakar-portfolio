@@ -2,9 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
-const authRouter = require('./routes/auth')
-const userRouter = require('./routes/user')
-const blogRouter = require('./routes/blog')
+const router = require('./routes')
 
 /* EXPRESS SERVER  */
 const server = express()
@@ -29,9 +27,7 @@ server.use(cors())
 // server.use('/api', (req, res) => {
 //   res.send('Server API is responding - Happy Hacking!')
 // })
-server.use('/api/auth', authRouter.router)
-server.use('/api/user', userRouter.router)
-server.use('/api/blog', blogRouter.router)
+server.use('/api', router)
 
 /* SERVER LISTEN */
 server.listen(process.env.PORT || process.env.SERVER_PORT, () => {

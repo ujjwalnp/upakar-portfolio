@@ -19,4 +19,4 @@ router
     .delete('/skill/:id', verifyToken, rateLimitPerRequestType('api'), userController.deleteSkill)
     .delete('/service/:id', verifyToken, rateLimitPerRequestType('api'), userController.deleteService)
 
-exports.router = router
+module.exports = router

@@ -9,4 +9,4 @@ router
 //   .post('/signup', require('../controllers/createUser').createUser)
 
 
-exports.router = router
+module.exports = router
