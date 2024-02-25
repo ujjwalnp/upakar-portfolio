@@ -31,11 +31,11 @@ function App({ setSharedData }) {
         if (savedUserData) {
           setSharedData(JSON.parse(savedUserData));
         }
-        const endPoint = '/api/user';
+        const endPoint = '/api/public/user';
         try {
         const apiResponse = await axios.get(apiUrl + endPoint);
-        const userData = apiResponse.data.user;
         if (apiResponse) {
+          const userData = apiResponse.data.user;
           setSharedData(userData);
           // Update data in localStorage upon successful API call
           localStorage.setItem('userData', JSON.stringify(userData));
