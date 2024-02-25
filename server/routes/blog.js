@@ -9,7 +9,7 @@ router
 
 /* READ */
     .get('/', bogController.getAllBlogs)
-    .get('/:id', verifyToken, bogController.getSpecificBlog)
+    .get('/:id', bogController.getSpecificBlog)
 
 /* UPDATE */
     .patch('/:id', verifyToken, bogController.updateBlog)
@@ -17,4 +17,4 @@ router
 /* DELETE */
     .delete('/:id', verifyToken, bogController.deleteBlog)
 
-exports.router = router
+module.exports = router

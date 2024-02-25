@@ -1,22 +1,21 @@
 const express = require('express')
 const router = express.Router()
-const { rateLimitPerRequestType } = require('../middlewares/rateLimit')
 const userController = require('../controllers/user')
 const { verifyToken } = require('../middlewares/auth')
 
 router
 /* CREATE */
-    .post('/skill/:userId', verifyToken, rateLimitPerRequestType('api'), userController.addSkill)
-    .post('/service/:userId', verifyToken, rateLimitPerRequestType('api'), userController.addService)
+    .post('/skill/:userId', verifyToken, userController.addSkill)
+    .post('/service/:userId', verifyToken, userController.addService)
 
 /* READ */
-    .get('/', rateLimitPerRequestType('general'), userController.getUserDetails)
+    .get('/', userController.getUserDetails)
 
 /* UPDATE */
-    .patch('/:userId', verifyToken, rateLimitPerRequestType('api'), userController.updateUserDetails)
+    .patch('/:userId', verifyToken, userController.updateUserDetails)
 
 /* DELETE */
-    .delete('/skill/:id', verifyToken, rateLimitPerRequestType('api'), userController.deleteSkill)
-    .delete('/service/:id', verifyToken, rateLimitPerRequestType('api'), userController.deleteService)
+    .delete('/skill/:id', verifyToken, userController.deleteSkill)
+    .delete('/service/:id', verifyToken, userController.deleteService)
 
 module.exports = router
